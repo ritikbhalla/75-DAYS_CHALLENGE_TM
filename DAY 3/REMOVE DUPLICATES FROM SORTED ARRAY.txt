@@ -1,0 +1,19 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length; // length of the array
+        if(n == 1 || n == 0){
+            return n; // only one or zero elements in the array
+        } 
+        int j = 0;
+        // check if the ith element is not equal to the (i+1)th element, then add that element
+        // at the jth index in the same array
+        // which indicates that the particular element will only be added once in the array
+        for(int i = 0; i < n - 1; i++){
+            if(nums[i] != nums[i+1]){
+                nums[j++] = nums[i];
+            }
+        }
+        nums[j++] = nums[n-1];
+        return j;
+    }
+}
