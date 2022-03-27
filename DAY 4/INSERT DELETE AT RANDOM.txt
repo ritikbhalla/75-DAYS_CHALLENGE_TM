@@ -1,0 +1,48 @@
+class RandomizedSet {
+    private List<Integer> list;
+    private Map<Integer, Integer> numToIdx;
+    private Random rand;
+    
+    public RandomizedSet() {
+        this.list = new ArrayList<>();
+        this.numToIdx = new HashMap<>();
+        this.rand = new Random();
+    }
+    
+    public boolean insert(int val) {
+        if (numToIdx.containsKey(val)) {
+            return false;
+        }
+        
+        list.add(val);
+        numToIdx.put(val, list.size() - 1);
+        return true;
+    }
+    
+    public boolean remove(int val) {
+        if (!numToIdx.containsKey(val)) {
+            return false;
+        }
+        
+        int idx = numToIdx.get(val);
+        int lastVal = list.get(list.size() - 1);
+        
+        //list - overwrite idx with last and pop last
+        //note that order of execution matters in case val == lastVal
+        list.set(idx, lastVal);
+        list.remove(list.size() - 1);
+        
+        //map - update last's idx and remove cur val
+        //note that order of execution matters in case val == lastVal
+        numToIdx.put(lastVal, idx);
+        numToIdx.remove(val);
+        
+        return true;
+    }
+    
+    public int getRandom() {
+        int randIdx = rand.nextInt(list.size());
+        return list.get(randIdx);
+    }
+}
+
