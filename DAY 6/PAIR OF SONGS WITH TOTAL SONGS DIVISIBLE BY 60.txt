@@ -1,0 +1,22 @@
+class Solution {
+    public int numPairsDivisibleBy60(int[] time) {
+        int count = 0;
+        int[] remainders = new int[60];
+       
+        for(int t : time){
+            if(t%60 == 0){
+                // if divisible by 60 increment count by number of such numbers encountered sofar
+                // so that they can pair up with current number
+                count += remainders[0];
+            }else{
+                // otherwise find if there is such number which sum to 60 
+                // i.e current number + other number = 60 look up for other number = 60 - current number
+                count += remainders[60-t%60];
+            }
+            // increment index of current number by 60 
+            // note we do %60 so that any number can be represented with in range of 1-60
+            remainders[t%60]++;
+        }
+    return count;
+    }
+}
