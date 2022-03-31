@@ -1,0 +1,30 @@
+class Solution {
+    int max=0;
+    int cur=0;
+    public int maxAreaOfIsland(int[][] grid) {
+         int[][] checked = new int[grid.length][grid[0].length];
+        for(int r = 0; r < grid.length; r ++){
+            for(int c = 0; c < grid[0].length; c ++){
+                helper(grid, checked, r, c);
+                max = Math.max(max, cur);
+                cur = 0;
+            }
+        }
+        return max;
+        
+    }
+    public void helper(int[][] grid, int[][] checked, int r, int c){
+        if(r < 0 || c < 0 || r >= checked.length || c >= checked[0].length){return;}
+        if(checked[r][c] == 1){return;}
+        else{
+            checked[r][c] = 1;
+            if(grid[r][c] == 1){
+                cur ++;
+                helper(grid, checked, r+1, c);
+                helper(grid, checked, r-1, c);
+                helper(grid, checked, r, c+1);
+                helper(grid, checked, r, c-1);
+            }
+        }
+    }
+}
