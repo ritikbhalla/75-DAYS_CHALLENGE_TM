@@ -1,0 +1,15 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        int lastIndexPosition = nums.length-1;
+	for(int i = lastIndexPosition-1; i>=0;i--){
+		/*
+	   with this condition we will check that if we jump from a index i and how many steps u can jump is
+	   given by nums[i], are we able to reach last index if yes we will update our lastIndexPoition as i
+		 */
+		if(i+nums[i] >= lastIndexPosition){
+			lastIndexPosition = i;
+		}
+	}
+	return lastIndexPosition==0;
+    }
+}
