@@ -1,0 +1,37 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+      int maxArea = 0;
+        int localArea;
+        int i;
+        List<Integer> mStack = new ArrayList<Integer>();
+        for (i = 0; i < heights.length; i++) {
+            if (mStack.size() == 0 || heights[mStack.get(mStack.size()-1)] <= heights[i]) {
+                mStack.add(i);
+            } else {
+                while (mStack.size() != 0 && heights[mStack.get(mStack.size()-1)] >= heights[i]) {
+                    if (mStack.size() > 1) {
+                        localArea = heights[mStack.get(mStack.size()-1)] * (i - mStack.get(mStack.size()-2) - 1);
+                    } else {
+                        localArea = heights[mStack.get(mStack.size()-1)] * i;
+                    }
+                    maxArea = Math.max(maxArea,localArea);
+                    mStack.remove(mStack.size()-1);
+                }
+                mStack.add(i);
+            }
+        }
+        
+        while (mStack.size() != 0) {
+            if (mStack.size() > 1) {
+                localArea = heights[mStack.get(mStack.size()-1)] * (i - mStack.get(mStack.size()-2) - 1);
+            } else {
+                localArea = heights[mStack.get(mStack.size()-1)] * i;
+            }
+            maxArea = Math.max(maxArea,localArea);
+            mStack.remove(mStack.size()-1);
+        }
+        
+        return maxArea;
+        
+    }
+}
