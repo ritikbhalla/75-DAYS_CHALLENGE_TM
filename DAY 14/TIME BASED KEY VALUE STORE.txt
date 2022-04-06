@@ -1,0 +1,66 @@
+class TimeMap {
+    private HashMap<String, List<Pair>> map;
+
+    public TimeMap() {
+        this.map = new HashMap<>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        map.computeIfAbsent(key, k ->  new ArrayList<>()).add(new Pair(value, timestamp));
+    }
+    
+    public String get(String key, int timestamp) {
+        List<Pair> li = map.get(key);
+        if(li == null || li.get(0).timestamp > timestamp) return "";
+        
+        /*
+            Find the position of timestamp + 1 so that if there is repetition of the required timestamp 
+            we can get latest value of the timestamp
+            i.e if the timestamps are 2,3,3,3,3,4,6
+            and the function call has timestamp 4, look for the possible index of 5 
+            The function will return the index of 6 in the list 
+            If we now go one step back, we will get the latest value of the given timestamp
+        */
+        
+        int pos = findIndexByBinarySearch(li, timestamp + 1);
+        pos -= 1;
+        
+        return li.get(pos).value;
+    }
+    
+    private int findIndexByBinarySearch(List<Pair> li, int timestamp){
+        if(li.get(li.size()-1).timestamp < timestamp) return li.size();
+        
+        int l = 0;
+        int h = li.size() - 1;
+        
+        while(l < h){
+            int m = l + (h - l)/2;
+            
+            if(li.get(m).timestamp < timestamp){
+                l = m+1;
+            }else h = m;
+        }
+        
+        return l;
+    }
+    
+    
+    private class Pair{
+        public String value;
+        public int timestamp;
+        
+        public Pair(String value, int timestamp){
+            this.value = value;
+            this.timestamp = timestamp;
+        }
+    }
+}
+
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
