@@ -1,0 +1,22 @@
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> order = new ArrayList<>();
+		List<Integer> result = new ArrayList<>();
+
+		for (int i = nums.length - 1; i >= 0; i--) {
+			int findPos = Collections.binarySearch(order, nums[i]);
+			if (findPos < 0) {
+				findPos = Math.abs(findPos + 1);
+			} else {
+				while (findPos > 0 && (order.get(findPos) - order.get(findPos - 1)) == 0)
+					findPos--;
+			}
+
+			result.add(findPos);
+			order.add(findPos, nums[i]);
+		}
+
+		Collections.reverse(result);
+		return result;
+    }
+}

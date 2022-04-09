@@ -1,0 +1,39 @@
+class Solution {
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        int ans = Integer.MIN_VALUE;
+        
+        // l - left end of rectangle
+        // r - right end of rectangle
+        // loop for width expansion
+        for(int l = 0; l < cols; l++){
+            int[] prefix = new int[rows];
+            for(int r = l; r < cols; r++){
+                // step 3
+                for(int row = 0; row < rows; row++){
+                    prefix[row] += matrix[row][r];
+                }
+                //System.out.println(l+" "+r+" "+Arrays.toString(prefix));
+                // step 4
+                //cummulative[j] - cummulative[i] <=k  -> cummulative[j] - k <= cummulative[i];
+                //we use ceil function to find cummulative sum which is store in our treeset
+                int cj = 0;
+                TreeSet<Integer> cummulative = new TreeSet<>();
+                cummulative.add(0);
+                for(int i = 0; i < rows; i++){
+                    cj += prefix[i];
+                    Integer ci = cummulative.ceiling(cj - k);
+                    // ci found, sum between i & j is cj - ci;    
+                    if(ci!=null){
+                        ans = Math.max(ans, cj-ci);
+                    }
+                    cummulative.add(cj);
+                }
+                
+            }
+        }
+        return ans;
+    }
+}
