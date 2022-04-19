@@ -1,0 +1,36 @@
+class Solution {
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        return dfs(root, subRoot);
+    }
+    
+    public boolean dfs(TreeNode parent, TreeNode child){
+        if(parent == null || child == null){
+            return false;
+        }
+        if(parent.val == child.val){
+            if(isValidTree(parent, child)){
+                return true;
+            }
+        }
+        return dfs(parent.left, child) || dfs(parent.right, child);
+        
+    }
+    
+    public boolean isValidTree(TreeNode parent, TreeNode child){
+        if(parent == null && child == null){
+            return true;
+        }
+        if(parent != null && child == null){
+            return false;
+        }
+        if(parent == null && child != null){
+            return false;
+        }
+        if(parent.val == child.val){
+            if(isValidTree(parent.left, child.left) && isValidTree(parent.right, child.right)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
